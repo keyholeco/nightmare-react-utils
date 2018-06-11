@@ -43,13 +43,17 @@ const find = function (selector, done) {
 
     for (let key in element) {
       if (key.startsWith('__reactInternalInstance$')) {
-        const compInternals = element[key]._currentElement
-        const compWrapper = compInternals._owner
-        const {props, state, context} = compWrapper._instance
-        return {
-          props,
-          state,
-          context
+        const fiberNode = element[key]
+        if (fiberNode && fiberNode.return && (fiberNode.return.stateNode || fiberNode.return.return.stateNode)) {
+          if (
+            Object.keys(fiberNode.return.stateNode).length === 0 &&
+            Object.keys(fiberNode.return.return.stateNode).length > -1
+          ) {
+            const {props, state, context} = fiberNode.return.return.stateNode
+            return { props, state, context }
+          }
+          const {props, state, context} = fiberNode.return.stateNode
+          return { props, state, context }
         }
       }
     }
@@ -77,13 +81,17 @@ const findAll = function (selector, done) {
     return elements.map(element => {
       for (let key in element) {
         if (key.startsWith('__reactInternalInstance$')) {
-          const compInternals = element[key]._currentElement
-          const compWrapper = compInternals._owner
-          const {props, state, context} = compWrapper._instance
-          return {
-            props,
-            state,
-            context
+          const fiberNode = element[key]
+          if (fiberNode && fiberNode.return && (fiberNode.return.stateNode || fiberNode.return.return.stateNode)) {
+            if (
+              Object.keys(fiberNode.return.stateNode).length === 0 &&
+              Object.keys(fiberNode.return.return.stateNode).length > -1
+            ) {
+              const {props, state, context} = fiberNode.return.return.stateNode
+              return { props, state, context }
+            }
+            const {props, state, context} = fiberNode.return.stateNode
+            return { props, state, context }
           }
         }
       }
@@ -206,10 +214,18 @@ function waitelem (self, selector, done) {
     '  if (!element) { return null }' +
     '  for (let key in element) {' +
     '    if (key.startsWith(\'__reactInternalInstance$\')) {' +
-    '      const compInternals = element[key]._currentElement;' +
-    '      const compWrapper = compInternals._owner;' +
-    '      const {props, state, context} = compWrapper._instance;' +
-    '      return {props, state, context}' +
+    '      const fiberNode = element[key];' +
+    '      if (fiberNode && fiberNode.return && (fiberNode.return.stateNode || fiberNode.return.return.stateNode)) {' +
+    '        if (' +
+    '          Object.keys(fiberNode.return.stateNode).length === 0 && ' +
+    '          Object.keys(fiberNode.return.return.stateNode).length > -1' +
+    '        ) {' +
+    '          const {props, state, context} = fiberNode.return.return.stateNode;' +
+    '          return { props, state, context }' +
+    '        }' +
+    '        const {props, state, context} = fiberNode.return.stateNode;' +
+    '        return { props, state, context }' +
+    '      }' +
     '    }' +
     '  }' +
     '  return null;' +
