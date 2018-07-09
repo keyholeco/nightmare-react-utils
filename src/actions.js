@@ -50,7 +50,7 @@ const find = function (selector, done) {
             Object.keys(fiberNode.return.stateNode).length > 0
           ) {
             const {props, state, context} = fiberNode.return.stateNode
-            if (props && state && context) return { props, state, context }
+            if (props || state || context) return { props, state, context }
           }
 
           if (
@@ -58,7 +58,7 @@ const find = function (selector, done) {
             Object.keys(fiberNode.return.return.stateNode).length > 0
           ) {
             const {props, state, context} = fiberNode.return.return.stateNode
-            if (props && state && context) return { props, state, context }
+            if (props || state || context) return { props, state, context }
           }
         }
       }
@@ -94,7 +94,7 @@ const findAll = function (selector, done) {
               Object.keys(fiberNode.return.stateNode).length > 0
             ) {
               const {props, state, context} = fiberNode.return.stateNode
-              if (props && state && context) return { props, state, context }
+              if (props || state || context) return { props, state, context }
             }
 
             if (
@@ -102,7 +102,7 @@ const findAll = function (selector, done) {
               Object.keys(fiberNode.return.return.stateNode).length > -1
             ) {
               const {props, state, context} = fiberNode.return.return.stateNode
-              if (props && state && context) return { props, state, context }
+              if (props || state || context) return { props, state, context }
             }
           }
         }
@@ -233,14 +233,14 @@ function waitelem (self, selector, done) {
     '          Object.keys(fiberNode.return.stateNode).length > 0' +
     '        ) {' +
     '          const {props, state, context} = fiberNode.return.stateNode;' +
-    '          if (props && state && context) return { props, state, context };' +
+    '          if (props || state || context) return { props, state, context };' +
     '        }' +
     '        if (' +
     '          (!fiberNode.return.stateNode.props || !fiberNode.return.stateNode.state) &&' +
     '          Object.keys(fiberNode.return.return.stateNode).length > -1' +
     '        ) {' +
     '          const {props, state, context} = fiberNode.return.return.stateNode;' +
-    '          if (props && state && context) return { props, state, context };' +
+    '          if (props || state || context) return { props, state, context };' +
     '        }' +
     '      }' +
     '    }' +
