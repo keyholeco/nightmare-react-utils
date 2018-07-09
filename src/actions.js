@@ -232,8 +232,8 @@ function waitelem (self, selector, done) {
     '          (fiberNode.return.stateNode.props || fiberNode.return.stateNode.state) &&' +
     '          Object.keys(fiberNode.return.stateNode).length > 0' +
     '        ) {' +
-    '          const {props, state, context} = fiberNode.return.stateNode' +
-    '          if (props && state && context) return { props, state, context }' +
+    '          const {props, state, context} = fiberNode.return.stateNode;' +
+    '          if (props && state && context) return { props, state, context };' +
     '        }' +
     '        if (' +
     '          (!fiberNode.return.stateNode.props || !fiberNode.return.stateNode.state) &&' +
